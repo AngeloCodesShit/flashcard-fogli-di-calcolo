@@ -130,6 +130,7 @@
     justify-content: center;
     padding: 2rem;
     border: 1px solid var(--border);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
   }
 
   .card-front {
@@ -140,6 +141,7 @@
     background: var(--card-back);
     transform: rotateY(180deg);
     border-color: rgba(42,107,42,0.2);
+    overflow-y: auto;
   }
 
   .card-label {
@@ -151,10 +153,6 @@
     display: flex;
     align-items: center;
     gap: 0.4rem;
-  }
-
-  .card-face {
-    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
   }
 
   .card-front .card-label::before {
@@ -251,7 +249,6 @@
     color: var(--accent);
   }
 
-  /* SHAKE on wrong nav */
   @keyframes shake {
     0%,100% { transform: translateX(0); }
     25% { transform: translateX(-6px); }
@@ -259,7 +256,6 @@
   }
   .shake { animation: shake 0.25s ease; }
 
-  /* SHUFFLE ANIMATION */
   @keyframes shuffleOut {
     0% { opacity: 1; transform: rotateY(0) scale(1); }
     50% { opacity: 0; transform: rotateY(90deg) scale(0.9); }
@@ -300,12 +296,57 @@
 </div>
 
 <script>
-const raw = `MS Excel, Standard di settore per fogli di calcolo, potente per calcoli complessi, analisi dati e creazione di grafici;LO Calc, Alternativa gratuita e open-source di LibreOffice, compatibile con Excel;Google Fogli, Soluzione cloud di Google per la collaborazione in tempo reale e l'accesso da qualsiasi dispositivo;Foglio di lavoro, Area principale di un file di calcolo in cui vengono inseriti i dati;Righe, Elementi orizzontali del foglio identificati da numeri (1, 2, 3...);Colonne, Elementi verticali del foglio identificati da lettere (A, B, C...);Cella, Intersezione tra una riga e una colonna con indirizzo univoco (es. A1, B5);Intervallo, Gruppo di celle adiacenti indicato con prima e ultima cella separate da due punti (es. A1:C5);Celle non consecutive, Selezione di più celle o intervalli separati indicati con il punto e virgola (es. A1;C3 oppure A1:A3;C1:C3);Dati numerici, Numeri interi, decimali, percentuali e valute;Dati testuali, Nomi, descrizioni e codici;Dati data/ora, Valori in formati specifici per date e orari;Formule, Espressioni matematiche o logiche che iniziano con = ed eseguono calcoli;Formato cella, Definisce come vengono visualizzati i dati senza modificarne il valore sottostante;Riferimento relativo (A1), Riferimento che si adatta automaticamente alla nuova posizione quando la formula viene copiata o trascinata;Riferimento assoluto ($A$1), Riferimento bloccato con $ su riga e colonna che rimane invariato quando la formula viene copiata;Riferimento misto (A$1 o $A1), Blocca solo la riga o solo la colonna, utile in scenari di calcolo complessi;SOMMA(intervallo), Calcola la somma di tutti i numeri in un intervallo;PRODOTTO(intervallo), Moltiplica tutti i numeri in un intervallo;ARROTONDA(numero; cifre_decimali), Arrotonda un numero al numero di cifre decimali specificato;CONTA.NUMERI(intervallo), Conta le celle che contengono numeri;CONTA.VALORI(intervallo), Conta le celle che contengono valori di qualsiasi tipo;CONTA.VUOTE(intervallo), Conta le celle vuote in un intervallo;CASUALE(), Genera un numero casuale compreso tra 0 incluso e 1 escluso;CASUALE.TRA(n1;n2), Genera un numero intero casuale compreso tra n1 e n2 inclusi;MEDIA(intervallo), Calcola la media aritmetica di un intervallo;MEDIANA(intervallo), Calcola il valore mediano di un intervallo;MODA(intervallo), Restituisce il valore più ricorrente in un intervallo;MAX(intervallo), Trova il valore massimo in un intervallo;MIN(intervallo), Trova il valore minimo in un intervallo;E(condizione1; condizione2; ...), Restituisce VERO solo se tutte le condizioni sono vere;O(condizione1; condizione2; ...), Restituisce VERO se almeno una condizione è vera;NON(condizione), Inverte il valore logico della condizione;SE(condizione; valore_se_vero; valore_se_falso), Restituisce il primo valore se la condizione è vera, altrimenti il secondo;CONTA.SE(intervallo; condizione), Conta le celle in cui il valore soddisfa la condizione specificata;#DIV/0!, Errore di divisione per zero (es. =10/0);#RIF!, Riferimento a una cella non valida o eliminata;#VALORE!, Tipo di dato o argomento non valido nella formula (es. sommare un numero a una lettera);#NOME?, Nome di funzione o riferimento non riconosciuto (es. errore di digitazione nella funzione);#NUM!, Errore numerico non ammesso (es. radice quadrata di un numero negativo);#######, La cella è troppo stretta per visualizzare il valore (solo Excel e Calc);#ERROR!, Errore di sintassi nella formula (solo Google Sheets);Formattazione condizionale, Strumento che applica automaticamente un formato alle celle (colore testo, sfondo, bordi) in base a una condizione o al loro contenuto;Grafico a colonne/istogramma, Tipo di grafico usato per confrontare valori tra categorie diverse;Grafico a torta, Tipo di grafico usato per mostrare le proporzioni rispetto a un totale;Grafico a linee, Tipo di grafico usato per mostrare tendenze e andamenti nel tempo;Grafico a dispersione, Tipo di grafico usato per visualizzare la relazione tra due set di dati numerici`;
+const raw = [
+  ["MS Excel", "Standard di settore per fogli di calcolo, potente per calcoli complessi, analisi dati e creazione di grafici"],
+  ["LO Calc", "Alternativa gratuita e open-source di LibreOffice, compatibile con Excel"],
+  ["Google Fogli", "Soluzione cloud di Google per la collaborazione in tempo reale e l'accesso da qualsiasi dispositivo"],
+  ["Foglio di lavoro", "Area principale di un file di calcolo in cui vengono inseriti i dati"],
+  ["Righe", "Elementi orizzontali del foglio identificati da numeri (1, 2, 3...)"],
+  ["Colonne", "Elementi verticali del foglio identificati da lettere (A, B, C...)"],
+  ["Cella", "Intersezione tra una riga e una colonna con indirizzo univoco (es. A1, B5)"],
+  ["Intervallo", "Gruppo di celle adiacenti indicato con prima e ultima cella separate da due punti (es. A1:C5)"],
+  ["Celle non consecutive", "Selezione di più celle o intervalli separati indicati con il punto e virgola (es. A1;C3 oppure A1:A3;C1:C3)"],
+  ["Dati numerici", "Numeri interi, decimali, percentuali e valute"],
+  ["Dati testuali", "Nomi, descrizioni e codici"],
+  ["Dati data/ora", "Valori in formati specifici per date e orari"],
+  ["Formule", "Espressioni matematiche o logiche che iniziano con = ed eseguono calcoli"],
+  ["Formato cella", "Definisce come vengono visualizzati i dati senza modificarne il valore sottostante"],
+  ["Riferimento relativo (A1)", "Riferimento che si adatta automaticamente alla nuova posizione quando la formula viene copiata o trascinata"],
+  ["Riferimento assoluto ($A$1)", "Riferimento bloccato con $ su riga e colonna che rimane invariato quando la formula viene copiata"],
+  ["Riferimento misto (A$1 o $A1)", "Blocca solo la riga o solo la colonna, utile in scenari di calcolo complessi"],
+  ["SOMMA(intervallo)", "Calcola la somma di tutti i numeri in un intervallo"],
+  ["PRODOTTO(intervallo)", "Moltiplica tutti i numeri in un intervallo"],
+  ["ARROTONDA(numero; cifre_decimali)", "Arrotonda un numero al numero di cifre decimali specificato"],
+  ["CONTA.NUMERI(intervallo)", "Conta le celle che contengono numeri"],
+  ["CONTA.VALORI(intervallo)", "Conta le celle che contengono valori di qualsiasi tipo"],
+  ["CONTA.VUOTE(intervallo)", "Conta le celle vuote in un intervallo"],
+  ["CASUALE()", "Genera un numero casuale compreso tra 0 incluso e 1 escluso"],
+  ["CASUALE.TRA(n1;n2)", "Genera un numero intero casuale compreso tra n1 e n2 inclusi"],
+  ["MEDIA(intervallo)", "Calcola la media aritmetica di un intervallo"],
+  ["MEDIANA(intervallo)", "Calcola il valore mediano di un intervallo"],
+  ["MODA(intervallo)", "Restituisce il valore più ricorrente in un intervallo"],
+  ["MAX(intervallo)", "Trova il valore massimo in un intervallo"],
+  ["MIN(intervallo)", "Trova il valore minimo in un intervallo"],
+  ["E(condizione1; condizione2; ...)", "Restituisce VERO solo se tutte le condizioni sono vere"],
+  ["O(condizione1; condizione2; ...)", "Restituisce VERO se almeno una condizione è vera"],
+  ["NON(condizione)", "Inverte il valore logico della condizione"],
+  ["SE(condizione; valore_se_vero; valore_se_falso)", "Restituisce il primo valore se la condizione è vera, altrimenti il secondo"],
+  ["CONTA.SE(intervallo; condizione)", "Conta le celle in cui il valore soddisfa la condizione specificata"],
+  ["#DIV/0!", "Errore di divisione per zero (es. =10/0)"],
+  ["#RIF!", "Riferimento a una cella non valida o eliminata"],
+  ["#VALORE!", "Tipo di dato o argomento non valido nella formula (es. sommare un numero a una lettera)"],
+  ["#NOME?", "Nome di funzione o riferimento non riconosciuto (es. errore di digitazione nella funzione)"],
+  ["#NUM!", "Errore numerico non ammesso (es. radice quadrata di un numero negativo)"],
+  ["#######", "La cella è troppo stretta per visualizzare il valore (solo Excel e Calc)"],
+  ["#ERROR!", "Errore di sintassi nella formula (solo Google Sheets)"],
+  ["Formattazione condizionale", "Strumento che applica automaticamente un formato alle celle (colore testo, sfondo, bordi) in base a una condizione o al loro contenuto"],
+  ["Grafico a colonne/istogramma", "Tipo di grafico usato per confrontare valori tra categorie diverse"],
+  ["Grafico a torta", "Tipo di grafico usato per mostrare le proporzioni rispetto a un totale"],
+  ["Grafico a linee", "Tipo di grafico usato per mostrare tendenze e andamenti nel tempo"],
+  ["Grafico a dispersione", "Tipo di grafico usato per visualizzare la relazione tra due set di dati numerici"]
+];
 
-const cards = raw.split(';').map(s => {
-  const idx = s.indexOf(',');
-  return { term: s.slice(0, idx).trim(), def: s.slice(idx + 1).trim() };
-});
+const cards = raw.map(([term, def]) => ({ term, def }));
 
 let index = 0;
 let flipped = false;
@@ -362,7 +403,6 @@ function shuffle() {
   }, { once: true });
 }
 
-// keyboard navigation
 document.addEventListener('keydown', e => {
   if (e.key === 'ArrowRight') navigate(1);
   if (e.key === 'ArrowLeft') navigate(-1);
